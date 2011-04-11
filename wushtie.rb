@@ -41,8 +41,6 @@ module Sim
 					end
 				} 
 			end
-
-			
 		end
 		def parse_user_input(input)
 				parts = input.split(" ")
@@ -51,7 +49,7 @@ module Sim
 					puts "hallo"
 				end
 				
-			end
+		end
 
 ### Utils ###
 
@@ -92,5 +90,5 @@ module Sim
 
 end
 
-#Sim::Game.new.start
+Sim::Game.new.start
 
