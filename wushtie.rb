@@ -12,10 +12,17 @@ module Sim
 			@lexicon = {
 				"i" => UserCommand.new("You ignored the wushtie.") {@not_feeding_times += 1; @make_her_mad[@not_feeding_times].execute},
 				"p" => UserCommand.new("You pet the wushtie.") {@not_feeding_times += 1; @make_her_mad[@not_feeding_times].execute},
-				"feed" => UserCommand.new("Good job, you have successfully fed the cat.") {@not_feeding_times -= 1;if @not_feeding_times < 0; @not_feeding_times = 0;end}, 
+				"feed" => UserCommand.new("Good job, you have successfully fed the cat.") {
+										@feeding_times += 1
+										@not_feeding_times -= 1
+										if @not_feeding_times < 0
+											@not_feeding_times = 0
+										end
+									}, 
+				"f" => UserCommand.new("Good job, you have successfully fed the cat.") {@not_feeding_times -= 1;if @not_feeding_times < 0; @not_feeding_times = 0;end}, 
 				"s" => UserCommand.new("You are bleeding this much:") {puts @bleeding},
-				"r" => UserCommand.new("There is a wushtie. You can feed her, [p]et her, [i]gnore her, or press [s] to see how much you are bleeding. After you've fed her, you can [q]uit. Press [r] to see this message again.") {},
-				"q" => UserCommand.new("bye!") {throw :break_out}
+				"r" => UserCommand.new("There is a wushtie. You can feed her, [p]et her, [i]gnore her, or press [s] to see how much you are bleeding. After you've fed her, you can [q]uit. Press [r] to see this message again. Don't feed her too much or she will throw it up.") {},
+				"q" => UserCommand.new("Bye!") {throw :break_out}
 			}
 
 			@make_her_mad = {
@@ -26,6 +33,7 @@ module Sim
 			}
 
 			@not_feeding_times = 0
+			@feeding_times = 0
 			@bleeding = 0
 		end
 
@@ -65,6 +73,8 @@ module Sim
 				true
 			end
 		end
+
+		
 
 		def usr_input
 			STDIN.readline.strip!
