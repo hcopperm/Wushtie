@@ -2,15 +2,13 @@
 module Sim
 	class Game
 
-		ACTIONWORDS = ["feed", "pet", "ignore", "brush"]
 
-		THINGS = ["wushtie"]
 
 
 		def initialize
 			@points = 0
 			@lexicon = {
-				"i" => UserCommand.new("You ignored the wushtie.") {@not_feeding_times += 1; @make_her_mad[@not_feeding_times].execute},
+				"i" => UserCommand.new(IGNORE) {@not_feeding_times += 1; @make_her_mad[@not_feeding_times].execute},
 				"p" => UserCommand.new("You pet the wushtie.") {@not_feeding_times += 1; @make_her_mad[@not_feeding_times].execute},
 				"feed" => UserCommand.new("Good job, you have successfully fed the cat.") {
 										@feeding_times += 1
@@ -18,8 +16,8 @@ module Sim
 										if @not_feeding_times < 0
 											@not_feeding_times = 0
 										end
-									}, 
-				"f" => UserCommand.new("Good job, you have successfully fed the cat.") {@not_feeding_times -= 1;if @not_feeding_times < 0; @not_feeding_times = 0;end}, 
+									},
+				"f" => UserCommand.new("Good job, you have successfully fed the cat.") {@not_feeding_times -= 1;if @not_feeding_times < 0; @not_feeding_times = 0;end},
 				"s" => UserCommand.new("You are bleeding this much:") {puts @bleeding},
 				"r" => UserCommand.new("There is a wushtie. You can feed her, [p]et her, [i]gnore her, or press [s] to see how much you are bleeding. After you've fed her, you can [q]uit. Press [r] to see this message again. Don't feed her too much or she will throw it up.") {},
 				"q" => UserCommand.new("Bye!") {throw :break_out}
@@ -38,25 +36,25 @@ module Sim
 		end
 
 		def start
-			puts @lexicon["r"].execute 
+			puts @lexicon["r"].execute
 			catch :break_out do
 				loop{
-					reply = usr_input 
+					reply = usr_input
 					if !@lexicon[reply].nil?
-						@lexicon[reply].execute 
+						@lexicon[reply].execute
 					else
 						puts "I'm sorry, I don't know what that means."
 					end
-				} 
+				}
 			end
 		end
 		def parse_user_input(input)
 				parts = input.split(" ")
-				
-				if ACTIONWORDS.include?(parts[0]) 
+
+				if ACTIONWORDS.include?(parts[0])
 					puts "hallo"
 				end
-				
+
 		end
 
 ### Utils ###
@@ -74,7 +72,7 @@ module Sim
 			end
 		end
 
-		
+
 
 		def usr_input
 			STDIN.readline.strip!
@@ -82,8 +80,8 @@ module Sim
 
 	end
 
-	#compy's response + appropriate code to execute	
-	class UserCommand	
+	#compy's response + appropriate code to execute
+	class UserCommand
 		def initialize(response, &block)
 			@response = response
 			@action = block
